@@ -17,13 +17,22 @@ const getStructure = function(details){
 };
 
 const getRecord = function(details){
-   const transactionRecord = {};
-   const id = details[3];
-   transactionRecord[id] = [];
+  let previousRecord = fs.readFileSync('./bevarageRecords.json',"utf8");
+  if(previousRecord == "") {
+    previousRecord = '{}'
+  };
+  previousRecord = JSON.parse(previousRecord);
+  const id = details[3];
+  if(!isIncludeOption(previousRecord,details[3])){
+   previousRecord[id] = [];
+  }
    const record = getStructure(details);
-   transactionRecord[id].push(record);
-   return transactionRecord;
-}
+   previousRecord[id].push(record);
+   console.log(previousRecord)
+   return previousRecord;
+};
+  
+
 
 const insertRecord = function(details){
   const record = getRecord(details);
