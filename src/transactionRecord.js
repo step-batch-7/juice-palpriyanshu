@@ -1,54 +1,70 @@
-const fs = require('fs');
-const getError = require('./utility.js').getError;
-const isIncludeOption = require('./utility.js').isIncludeOption;
+const fs = require("fs");
+const getError = require("./utility.js").getError;
+const isIncludeOption = require("./utility.js").isIncludeOption;
+const readRecords = require("./readTransactions.js").readRecords;
+const isValidSaveParameters = require("./inputValidation.js")
+  .isValidSaveParameters;
+const getTransactionFields = require("./utility.js").getTransactionFields;
 
-const getOption = function(cmdlineArg){
-  return cmdlineArg[0];
+const path = "./transactions.json";
+
+const getTransaction = function(transactionFields, dateAndTime) {
+  const transaction = {
+    empid: transactionFields["--empid"],
+    beverages: transactionFields["--beverage"],
+    qty: transactionFields["--qty"],
+    date: dateAndTime
+  };
+  return transaction;
 };
 
-const getStructure = function(details){
-  const structure = {
-    "empid": details[3],
-    "bevarages": details[1],
-    "qty": details[5],
-    "date":new Date()
-  };
-  return structure;
-};
-
-const getRecord = function(details){
-  let previousRecord = fs.readFileSync('./bevarageRecords.json',"utf8");
-  if(previousRecord == "") {
-    previousRecord = '{}'
-  };
-  previousRecord = JSON.parse(previousRecord);
-  const id = details[3];
-  if(!isIncludeOption(previousRecord,details[3])){
-   previousRecord[id] = [];
+const getPreviousTransactions = function(path) {
+  let previousTransactions = {};
+  if (!fs.existsSync(path)) {
+    fs.writeFileSync(path, JSON.stringify(previousTransactions), "utf8");
   }
-   const record = getStructure(details);
-   previousRecord[id].push(record);
-   console.log(previousRecord)
-   return previousRecord;
-};
-  
-
-
-const insertRecord = function(details){
-  const record = getRecord(details);
-  const recordAsString = JSON.stringify(record);
-  fs.writeFileSync("./bevarageRecords.json",recordAsString,"utf8");
-  return record;
+  previousTransactions = fs.readFileSync(path, "utf8");
+  previousTransactions = JSON.parse(previousTransactions);
+  return previousTransactions;
 };
 
-const executeOption = function(option, details){
-  const options = {"--save" : insertRecord};
-  if(isIncludeOption(options,option)) {
-    return options[option](details);
-  };
+const getTransactionRecord = function(transactionFields, dateAndTime, path) {
+  let transactionRecord = getPreviousTransactions(path);
+  const id = transactionFields["--empid"];
+  if (!isIncludeOption(transactionRecord, id)) {
+    transactionRecord[id] = [];
+  }
+  const record = getTransaction(transactionFields, dateAndTime);
+  transactionRecord[id].push(record);
+  return transactionRecord;
+};
+
+const insertRecord = function(parameters, dateAndTime, path) {
+  if (isValidSaveParameters(parameters)) {
+    const transactionFields = getTransactionFields(parameters);
+    let transactions = getTransactionRecord(
+      transactionFields,
+      dateAndTime,
+      path
+    );
+    transactions = JSON.stringify(transactions, null, 2);
+    fs.writeFileSync(path, transactions, "utf8");
+    return transactions;
+  }
   return getError();
 };
 
-exports.getOption = getOption;
-exports.executeOption = executeOption;
-exports.getStructure = getStructure;
+const parseOperationAndParameter = function(cmdLineArg, dateAndTime) {
+  const options = { "--save": insertRecord, "--query": readRecords };
+  let operationName = cmdLineArg[0];
+  const parameters = cmdLineArg.slice(1);
+  if (isIncludeOption(options, operationName)) {
+    return options[operationName](parameters, dateAndTime, path);
+  }
+  return getError();
+};
+
+exports.parseOperationAndParameter = parseOperationAndParameter;
+exports.getTransaction = getTransaction;
+exports.getPreviousTransactions = getPreviousTransactions;
+exports.getTransactionRecord = getTransactionRecord;

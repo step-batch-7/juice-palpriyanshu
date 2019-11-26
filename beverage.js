@@ -1,11 +1,11 @@
-const getOption = require('./src/transactionRecord.js').getOption;
-const executeOption = require('./src/transactionRecord.js').executeOption;
+const parseOperationAndParameter = require("./src/transactionRecord.js")
+  .parseOperationAndParameter;
 
-const main = function(){
+const main = function() {
   const cmdLineArg = process.argv.slice(2);
-  const option = getOption(cmdLineArg);
-  const details = process.argv.slice(3); 
-  const result = executeOption(option,details);
+  const date = new Date();
+  const result = parseOperationAndParameter(cmdLineArg, date);
+  console.log(result);
 };
 
 main();
