@@ -1,8 +1,10 @@
 const fs = require("fs");
 const isValidQueryParameters = require("./inputValidation.js")
   .isValidQueryParameters;
-const getError = require("./utility.js").getError;
-const getTransactionFields = require("./utility.js").getTransactionFields;
+const utility = require("./utility.js");
+
+const getError = utility.getError;
+const getTransactionFields = utility.getTransactionFields;
 
 const getTransactionField = function(empid) {
   const transactionFields = Object.values(empid);
@@ -15,19 +17,19 @@ const getMessage = function(transactionFieldVal) {
   return message;
 };
 
-const readRecords = function(parameters, dateAndTime, path) {
+const readRecords = function(parameters, dateAndTime, path, encoder, fileSys) {
   if (isValidQueryParameters(parameters)) {
     const transactionFields = getTransactionFields(parameters);
-    let transactionRecord = fs.readFileSync(path, "utf8");
+    let transactionRecord = fileSys.reader(path, encoder);
     const empid = transactionFields["--empid"];
     transactionRecord = JSON.parse(transactionRecord);
     if (transactionRecord[empid] == undefined) {
       return getError();
     }
-    const transactionFieldVal = transactionRecord[empid]
+    const transactionFieldAsString = transactionRecord[empid]
       .map(getTransactionField)
       .join("\n");
-    const message = getMessage(transactionFieldVal);
+    const message = getMessage(transactionFieldAsString);
     return message;
   }
   return getError();
