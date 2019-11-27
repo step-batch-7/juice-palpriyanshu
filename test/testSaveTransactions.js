@@ -15,11 +15,11 @@ describe("generateCurrentTransaction", function() {
       "--empid": "23",
       "--qty": "8"
     };
-    let dateAndTime = "1-2-2020";
+    let dateAndTime = new Date();
     let expected = {
-      empid: "23",
+      empid: 23,
       beverages: "orange",
-      qty: "8",
+      qty: 8,
       date: dateAndTime
     };
     assert.deepStrictEqual(
@@ -32,9 +32,9 @@ describe("generateCurrentTransaction", function() {
     let parsedParameters = {};
     let dateAndTime = new Date();
     let expected = {
-      empid: undefined,
+      empid: +undefined,
       beverages: undefined,
-      qty: undefined,
+      qty: +undefined,
       date: dateAndTime
     };
     assert.deepStrictEqual(
@@ -50,11 +50,11 @@ describe("generateCurrentTransaction", function() {
       "--qty": "8",
       "--empid": "34"
     };
-    let dateAndTime = "20/01/1999";
+    let dateAndTime = new Date();
     let expected = {
-      empid: "34",
+      empid: 34,
       beverages: "orange",
-      qty: "8",
+      qty: 8,
       date: dateAndTime
     };
     assert.deepStrictEqual(
@@ -128,13 +128,29 @@ describe("saveTransactions", function() {
 
 describe("generateSaveMessage", function() {
   it("should generate message after saving the transactions", function() {
-    let actual = generateSaveMessage("message");
+    let dateAndTime = new Date();
+    let currentTransaction = {
+      empid: 23,
+      beverages: "orange",
+      qty: 8,
+      date: dateAndTime
+    };
+    let actual = generateSaveMessage(currentTransaction);
     let expected =
       "Transaction Recorded: " +
       "\n" +
       "Employee ID,Beverage,Quantity,Date" +
       "\n" +
-      "m,e,s,s,a,g,e";
+      "23" +
+      "," +
+      " " +
+      "orange" +
+      "," +
+      " " +
+      "8" +
+      "," +
+      " " +
+      dateAndTime.toJSON();
     assert.strictEqual(actual, expected);
   });
 });

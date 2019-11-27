@@ -13,7 +13,6 @@ const main = function() {
     parameters.length
   );
   let date = new Date();
-  date = date.toJSON();
   const path = "./transactions.json";
   const fileSys = {
     reader: fs.readFileSync,

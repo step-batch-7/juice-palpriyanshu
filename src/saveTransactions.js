@@ -1,8 +1,8 @@
 const generateCurrentTransaction = function(parsedParameters, dateAndTime) {
   const transaction = {
-    empid: parsedParameters["--empid"],
+    empid: +parsedParameters["--empid"],
     beverages: parsedParameters["--beverage"],
-    qty: parsedParameters["--qty"],
+    qty: +parsedParameters["--qty"],
     date: dateAndTime
   };
   return transaction;
@@ -29,9 +29,19 @@ const saveTransactions = function(updatedTransactions, path, fileSys) {
 };
 
 const generateSaveMessage = function(currentTransaction) {
+  let fields =
+    currentTransaction["empid"] +
+    "," +
+    " " +
+    currentTransaction["beverages"] +
+    "," +
+    " " +
+    currentTransaction["qty"] +
+    "," +
+    " " +
+    currentTransaction["date"].toJSON();
   let message = "Transaction Recorded: ";
   message = message + "\n" + "Employee ID,Beverage,Quantity,Date";
-  let fields = Object.values(currentTransaction);
   message = message + "\n" + fields;
   return message;
 };

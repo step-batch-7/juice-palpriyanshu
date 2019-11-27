@@ -1,5 +1,5 @@
 const utility = require("./utility.js");
-const readRecords = require("./readTransactions.js").readRecords;
+const read = require("./readTransactions.js");
 const saved = require("./saveTransactions.js");
 
 const generateCurrentTransaction = saved.generateCurrentTransaction;
@@ -7,6 +7,7 @@ const getPreviousTransactions = saved.getPreviousTransactions;
 const updateTransactions = saved.updateTransactions;
 const saveTransactions = saved.saveTransactions;
 const generateSaveMessage = saved.generateSaveMessage;
+const fetchTransactions = read.fetchTransactions;
 
 const performSaveOperation = function(
   parsedParameters,
@@ -33,6 +34,19 @@ const performSaveOperation = function(
   return message;
 };
 
+const performQueryOperation = function(
+  parsedParameters,
+  dateAndTime,
+  path,
+  fileSys
+) {
+  let fetchedTransactions = "record not found";
+  if (fileSys.exist(path)) {
+    fetchedTransactions = fetchTransactions(path, fileSys);
+  }
+  return fetchedTransactions;
+};
+
 const performOperation = function(
   operation,
   parsedParameters,
@@ -40,8 +54,13 @@ const performOperation = function(
   path,
   fileSys
 ) {
-  const options = { "--save": performSaveOperation, "--query": readRecords };
+  const options = {
+    "--save": performSaveOperation,
+    "--query": performQueryOperation
+  };
   return options[operation](parsedParameters, dateAndTime, path, fileSys);
 };
 
 exports.performOperation = performOperation;
+exports.performQueryOperation = performQueryOperation;
+exports.performSaveOperation = performSaveOperation;

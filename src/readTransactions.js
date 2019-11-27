@@ -1,5 +1,8 @@
-const readRecords = function(parsedParameters, dateAndTime, path, fileSyss) {
-  return 0;
+const fs = require("fs");
+
+const fetchTransactions = function(path, fileSys) {
+  let fetchedTransaction = fileSys.reader(path, "utf8");
+  return JSON.parse(fetchedTransaction);
 };
 
-exports.readRecords = readRecords;
+exports.fetchTransactions = fetchTransactions;
