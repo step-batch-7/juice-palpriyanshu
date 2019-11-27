@@ -1,22 +1,30 @@
-const parseOperationAndParameter = require("./src/transactionRecord.js")
-  .parseOperationAndParameter;
+const performOperation = require("./src/transactionRecord.js").performOperation;
 const fs = require("fs");
+const util = require("./src/utility.js");
+const isValidInput = require("./src/inputValidation.js").isValidInput;
 
 const main = function() {
-  const cmdLineArg = process.argv.slice(2);
+  const operation = process.argv[2];
+  const parameters = process.argv.slice(3);
+  const parsedParameters = util.parseParameters(parameters);
+  const inputValidity = isValidInput(
+    operation,
+    parsedParameters,
+    parameters.length
+  );
+  let date = new Date();
+  date = date.toJSON();
   const path = "./transactions.json";
-  const date = new Date();
-  const encoder = "utf8";
   const fileSys = {
     reader: fs.readFileSync,
     writer: fs.writeFileSync,
     exist: fs.existsSync
   };
-  const result = parseOperationAndParameter(
-    cmdLineArg,
+  const result = performOperation(
+    operation,
+    parsedParameters,
     date,
     path,
-    encoder,
     fileSys
   );
   console.log(result);

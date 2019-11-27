@@ -5,6 +5,7 @@ const isValidBeverage = validity.isValidBeverage;
 const isValidOptionAndValue = validity.isValidOptionAndValue;
 const isValidSaveParameters = validity.isValidSaveParameters;
 const isValidQueryParameters = validity.isValidQueryParameters;
+const isValidInput = validity.isValidInput;
 
 describe("isValidBeverage", function() {
   it("should validate when correct option and value is present", function() {
@@ -64,44 +65,80 @@ describe("isValidOptionAndValue", function() {
 
 describe("isValidSaveParameters", function() {
   it("should validate when all option and length of parameters is correct", function() {
-    let parameters = ["--beverage", "orange", "--empid", "88", "--qty", "1"];
-    assert.ok(isValidSaveParameters(parameters));
+    let parsedParameters = {
+      "--beverage": "orange",
+      "--empid": "88",
+      "--qty": "1"
+    };
+    assert.ok(isValidSaveParameters(parsedParameters, 6));
   });
 
   it("should invalidate when '--beverage' is incorrect", function() {
-    let parameters = ["--beverage", "brinjal", "--empid", "88", "--qty", "1"];
-    assert.ok(!isValidSaveParameters(parameters));
+    let parsedParameters = {
+      "--beverage": "brinjal",
+      "--empid": "88",
+      "--qty": "1"
+    };
+    assert.ok(!isValidSaveParameters(parsedParameters, 6));
   });
 
   it("should invalidate when '--empid' is incorrect", function() {
-    let parameters = ["--beverage", "orange", "--empid", "-88", "--qty", "1"];
-    assert.ok(!isValidSaveParameters(parameters));
+    let parsedParameters = {
+      "--beverage": "orange",
+      "--empid": "-88",
+      "--qty": "1"
+    };
+    assert.ok(!isValidSaveParameters(parsedParameters, 6));
   });
 
   it("should invalidate when parameters length are is not equal to 6", function() {
-    let parameters = ["--beverage", "orange", "--empid", "88"];
-    assert.ok(!isValidSaveParameters(parameters));
+    let parsedParameters = { "--beverage": "orange", "--empid": "88" };
+    assert.ok(!isValidSaveParameters(parsedParameters, 4));
   });
 });
 
 describe("isValidQueryParameters", function() {
   it("should validate when empid and length of parameters is correct", function() {
-    let parameters = ["--empid", "88"];
-    assert.ok(isValidQueryParameters(parameters));
+    let parsedParameters = { "--empid": "88" };
+    assert.ok(isValidQueryParameters(parsedParameters, 2));
   });
 
   it("should invalidate when '--empid' value is incorrect", function() {
-    let parameters = ["--empid", "8.8"];
-    assert.ok(!isValidQueryParameters(parameters));
+    let parsedParameters = { "--empid": "8.8" };
+    assert.ok(!isValidQueryParameters(parsedParameters, 2));
   });
 
   it("should invalidate when '--empid' option is incorrect", function() {
-    let parameters = ["-empid", "-88"];
-    assert.ok(!isValidQueryParameters(parameters));
+    let parsedParameters = { "-empid": "-88" };
+    assert.ok(!isValidQueryParameters(parsedParameters, 2));
   });
 
   it("should invalidate when parameters length are is not equal to 2", function() {
-    let parameters = ["--empid", "2", "--qty", "2"];
-    assert.ok(!isValidQueryParameters(parameters));
+    let parsedParameters = { "--empid": "2", "--qty": "2" };
+    assert.ok(!isValidQueryParameters(parsedParameters, 4));
+  });
+});
+
+describe("isValidInput", function() {
+  it("should validate for save parameters when save option is present", function() {
+    let operation = "--save";
+    let parsedParameters = {
+      "--beverage": "apple",
+      "--empid": "3",
+      "--qty": "1"
+    };
+    assert.ok(isValidInput(operation, parsedParameters, 6));
+  });
+
+  it("should validate for query parameters when query option is present", function() {
+    let operation = "--query";
+    let parsedParameters = { "--empid": "3" };
+    assert.ok(isValidInput(operation, parsedParameters, 2));
+  });
+
+  it("should invalidate when neither save nor query option is present", function() {
+    let operation = "xyz";
+    let parsedParameters = { "--empid": "3" };
+    assert.ok(!isValidInput(operation, parsedParameters, 2));
   });
 });

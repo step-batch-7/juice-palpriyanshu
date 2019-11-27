@@ -4,7 +4,7 @@ const assert = require("assert");
 const getError = utility.getError;
 const isIncludeOption = utility.isIncludeOption;
 const isPositiveInt = utility.isPositiveInt;
-const getTransactionFields = utility.getTransactionFields;
+const parseParameters = utility.parseParameters;
 
 describe("getError", function() {
   it("should print error message", function() {
@@ -42,16 +42,16 @@ describe("isPositiveInt", function() {
   });
 });
 
-describe("getTransactionFields", function() {
+describe("parseParameters", function() {
   it("should give transactionFields for even num of parameters", function() {
     let parameters = ["beverage", "orange", "empid", "5", "qty", "4"];
     let expected = { beverage: "orange", empid: "5", qty: "4" };
-    assert.deepStrictEqual(getTransactionFields(parameters), expected);
+    assert.deepStrictEqual(parseParameters(parameters), expected);
   });
 
   it("should give transactionFields for odd num of parameters", function() {
     let parameters = ["beverage", "orange", "empid", "5", "qty"];
     let expected = { beverage: "orange", empid: "5", qty: undefined };
-    assert.deepStrictEqual(getTransactionFields(parameters), expected);
+    assert.deepStrictEqual(parseParameters(parameters), expected);
   });
 });

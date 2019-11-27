@@ -7,7 +7,7 @@ const isIncludeOption = function(options, option) {
   return Object.keys(options).includes(option);
 };
 
-const getTransactionFields = function(parameters) {
+const parseParameters = function(parameters) {
   let arg = {};
   for (let idx = 0; idx < parameters.length; idx = idx + 2) {
     arg[parameters[idx]] = parameters[idx + 1];
@@ -21,5 +21,5 @@ const isPositiveInt = function(num) {
 
 exports.getError = getError;
 exports.isIncludeOption = isIncludeOption;
-exports.getTransactionFields = getTransactionFields;
+exports.parseParameters = parseParameters;
 exports.isPositiveInt = isPositiveInt;
