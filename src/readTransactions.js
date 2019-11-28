@@ -8,12 +8,12 @@ const fetchTransactions = function(path, fileSys) {
 
 const isCriteriaTrue = function(parsedParameters) {
   return function(transaction) {
-    const empId = transaction["empId"] == parsedParameters["--empId"];
-    console.log("tra-->", transaction["date"].toJSON().slice(0, 10));
-    console.log("par-->", parsedParameters["--date"]);
+    const empId = parsedParameters["--empId"] || transaction["empId"];
     const date =
-      transaction["date"].toJSON().slice(0, 10) == parsedParameters["--date"];
-    return empId || date;
+      parsedParameters["--date"] || transaction["date"].toJSON().slice(0, 10);
+    const validEmpId = empId == transaction["empId"];
+    const validDate = date == transaction["date"].toJSON().slice(0, 10);
+    return validDate && validEmpId;
   };
 };
 
