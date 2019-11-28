@@ -9,7 +9,11 @@ const fetchTransactions = function(path, fileSys) {
 const isCriteriaTrue = function(parsedParameters) {
   return function(transaction) {
     const empId = transaction["empId"] == parsedParameters["--empId"];
-    return empId;
+    console.log("tra-->", transaction["date"].toJSON().slice(0, 10));
+    console.log("par-->", parsedParameters["--date"]);
+    const date =
+      transaction["date"].toJSON().slice(0, 10) == parsedParameters["--date"];
+    return empId || date;
   };
 };
 

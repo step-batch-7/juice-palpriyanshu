@@ -75,7 +75,19 @@ describe("isCriteriaTrue", function() {
       date: dateAndTime
     };
     parsedParameters = { "--empId": 2 };
-    assert.ok(isCriteriaTrue(parsedParameters));
+    assert.ok(isCriteriaTrue(parsedParameters)(transaction));
+  });
+
+  it("should invalidate when wrong employee Id is given", function() {
+    let dateAndTime = new Date();
+    let transaction = {
+      empId: "2",
+      beverage: "orange",
+      qty: "1",
+      date: dateAndTime
+    };
+    parsedParameters = { "--empId": 67 };
+    assert.ok(!isCriteriaTrue(parsedParameters)(transaction));
   });
 
   it("should validate when date is given", function() {
@@ -86,11 +98,11 @@ describe("isCriteriaTrue", function() {
       qty: "1",
       date: dateAndTime
     };
-    criteria1 = 20 / 11 / 2019;
-    assert.ok(isCriteriaTrue(criteria1));
+    let parsedParameters = { "--date": "2019-11-28" };
+    assert.ok(isCriteriaTrue(parsedParameters)(transaction));
   });
 
-  it("should validate when both date and empId is given", function() {
+  it("should invalidate when wrong date is given", function() {
     let dateAndTime = new Date();
     let transaction = {
       empId: "2",
@@ -98,8 +110,7 @@ describe("isCriteriaTrue", function() {
       qty: "1",
       date: dateAndTime
     };
-    criteria1 = 20 / 11 / 2019;
-    criteria2 = 2;
-    assert.ok(isCriteriaTrue(criteria1, criteria2));
+    let parsedParameters = { "--date": "2019-11-23" };
+    assert.ok(!isCriteriaTrue(parsedParameters)(transaction));
   });
 });
