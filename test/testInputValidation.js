@@ -113,9 +113,18 @@ describe("isValidQueryParameters", function() {
     assert.ok(!isValidQueryParameters(parsedParameters, 2));
   });
 
-  it("should invalidate when parameters length are is not equal to 2", function() {
-    let parsedParameters = { "--empId": "2", "--date": "2/1/1999" };
+  it("should validate when parameters length are equal to 4", function() {
+    let parsedParameters = { "--empId": "2", "--date": "2-1-1999" };
     assert.ok(isValidQueryParameters(parsedParameters, 4));
+  });
+
+  it("should validate when parameters length are equal to 6", function() {
+    let parsedParameters = {
+      "--empId": "2",
+      "--date": "2-1-1999",
+      "--beverage": "orange"
+    };
+    assert.ok(isValidQueryParameters(parsedParameters, 6));
   });
 });
 

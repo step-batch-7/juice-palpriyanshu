@@ -5,6 +5,7 @@ const fetchTransactions = read.fetchTransactions;
 const extractTransactions = read.extractTransactions;
 const getTotalQty = read.getTotalQty;
 const isCriteriaTrue = read.isCriteriaTrue;
+const getMessageForQuery = read.getMessageForQuery;
 
 describe("fetchTransactions", function() {
   it("should fetch the transactions from file when file is exist", function() {
@@ -25,8 +26,8 @@ describe("fetchTransactions", function() {
 
 describe("extractTransactions", function() {
   it("should extract the transactions on the basis of empId", function() {
-    let dateAndTime = new Date();
-    let date = new Date("2019-11-28T09:39:22.955Z");
+    let dateAndTime = new Date().toJSON();
+    let date = new Date("2019-11-28T09:39:22.955Z").toJSON();
     let fetchedTransactions = [
       { empId: 1, date: dateAndTime },
       { empId: 2, date: dateAndTime },
@@ -39,20 +40,21 @@ describe("extractTransactions", function() {
     );
   });
 
-  // it("should extract the transactions on the basis of date", function() {
-  //   let dateAndTime = new Date();
-  //   let date = new Date("2019-11-28T09:39:22.955Z");
-  //   let fetchedTransactions = [
-  //     { empId: 1, date: dateAndTime },
-  //     { empId: 2, date: dateAndTime },
-  //     { empId: 1, date: date }
-  //   ];
-  //   let criteria = "2019-11-27";
-  //   assert.deepStrictEqual(extractTransactions(fetchedTransactions, criteria), [
-  //     { empId: 1, date: dateAndTime },
-  //     { empId: 2, date: dateAndTime }
-  //   ]);
-  // });
+  it("should extract the transactions on the basis of date", function() {
+    let dateAndTime = new Date().toJSON();
+    let date = new Date("2019-11-29T09:39:22.955Z").toJSON();
+    let fetchedTransactions = [
+      { empId: 1, date: dateAndTime },
+      { empId: 2, date: dateAndTime },
+      { empId: 1, date: date }
+    ];
+    let parsedParameters = { "--date": "2019-11-28" };
+    let actual = extractTransactions(fetchedTransactions, parsedParameters);
+    assert.deepStrictEqual(actual, [
+      { empId: 1, date: dateAndTime },
+      { empId: 2, date: dateAndTime }
+    ]);
+  });
 });
 
 describe("getTotalQty", function() {
@@ -67,7 +69,7 @@ describe("getTotalQty", function() {
 
 describe("isCriteriaTrue", function() {
   it("should validate when employee Id is given", function() {
-    let dateAndTime = new Date();
+    let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: 2,
       beverage: "orange",
@@ -79,7 +81,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should invalidate when wrong employee Id is given", function() {
-    let dateAndTime = new Date();
+    let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: "2",
       beverage: "orange",
@@ -91,7 +93,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should validate when date is given", function() {
-    let dateAndTime = new Date();
+    let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: "2",
       beverage: "orange",
@@ -103,7 +105,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should invalidate when wrong date is given", function() {
-    let dateAndTime = new Date();
+    let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: "2",
       beverage: "orange",
@@ -115,7 +117,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should validate when both empId and date is correct", function() {
-    let dateAndTime = new Date();
+    let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: 2,
       beverage: "orange",
@@ -127,7 +129,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should validate when both empId and date is wrong", function() {
-    let dateAndTime = new Date();
+    let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: 1,
       beverage: "orange",
@@ -136,5 +138,59 @@ describe("isCriteriaTrue", function() {
     };
     let parsedParameters = { "--date": "2019-11-23", "--empId": 2 };
     assert.ok(!isCriteriaTrue(parsedParameters)(transaction));
+  });
+
+  it("should validate when beverage is given", function() {
+    let dateAndTime = new Date().toJSON();
+    let transaction = {
+      empId: 2,
+      beverage: "orange",
+      qty: 1,
+      date: dateAndTime
+    };
+    let parsedParameters = { "--beverages": "orange" };
+    assert.ok(isCriteriaTrue(parsedParameters)(transaction));
+  });
+
+  it("should invalidate when wrong beverage is given", function() {
+    let dateAndTime = new Date().toJSON();
+    let transaction = {
+      empId: 2,
+      beverage: "orange",
+      qty: 1,
+      date: dateAndTime
+    };
+    let parsedParameters = { "--beverages": "chair" };
+    assert.ok(!isCriteriaTrue(parsedParameters)(transaction));
+  });
+});
+
+describe("getMessageForQuery", function() {
+  it("should return the message after getting query option", function() {
+    let extractedTransactions = [
+      { empId: 2, beverage: "orange", qty: 3 },
+      { empId: 2, beverage: "apple", qty: 2 }
+    ];
+    let totalQty = 5;
+    let header = "Employee Id, Beverage, Quantity, Date";
+    let total = "total : " + totalQty + " juice";
+    let expected =
+      header +
+      "\n" +
+      2 +
+      "," +
+      "orange" +
+      "," +
+      3 +
+      "\n" +
+      2 +
+      "," +
+      "apple" +
+      "," +
+      2 +
+      "\n" +
+      total;
+    let actual = getMessageForQuery(extractedTransactions, totalQty);
+    assert.strictEqual(actual, expected);
   });
 });

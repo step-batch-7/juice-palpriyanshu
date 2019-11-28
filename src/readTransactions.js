@@ -9,11 +9,12 @@ const fetchTransactions = function(path, fileSys) {
 const isCriteriaTrue = function(parsedParameters) {
   return function(transaction) {
     const empId = parsedParameters["--empId"] || transaction["empId"];
-    const date =
-      parsedParameters["--date"] || transaction["date"].toJSON().slice(0, 10);
+    const beverage = parsedParameters["--beverages"] || transaction["beverage"];
+    const date = parsedParameters["--date"] || transaction["date"].slice(0, 10);
     const validEmpId = empId == transaction["empId"];
-    const validDate = date == transaction["date"].toJSON().slice(0, 10);
-    return validDate && validEmpId;
+    const validBeverage = beverage == transaction["beverage"];
+    const validDate = date == transaction["date"].slice(0, 10);
+    return validDate && validEmpId && validBeverage;
   };
 };
 

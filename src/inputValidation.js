@@ -22,9 +22,10 @@ const isValidSaveParameters = function(parsedParameters, length) {
 };
 
 const isValidQueryParameters = function(parsedParameters, length) {
-  const validLength = length == 2 || length == 4;
+  const validLength = length == 2 || length == 4 || length == 6;
   const validEmpId = isValidOptionAndValue(parsedParameters, "--empId");
-  return validLength && validEmpId;
+  const validBeverage = isValidBeverage(parsedParameters);
+  return validLength && (validEmpId || validBeverage);
 };
 
 const isValidInput = function(operation, parsedParameters, length) {
