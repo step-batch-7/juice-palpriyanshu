@@ -1,4 +1,2 @@
-take path from mains
-tests for insertRecord
-tests for readRecords
-make a function to get total qty 
+refactor main function
+filter should work for any criteria
