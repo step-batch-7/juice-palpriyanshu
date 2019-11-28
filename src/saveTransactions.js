@@ -1,6 +1,6 @@
 const generateCurrentTransaction = function(parsedParameters, dateAndTime) {
   const transaction = {
-    empid: +parsedParameters["--empid"],
+    empId: +parsedParameters["--empId"],
     beverages: parsedParameters["--beverage"],
     qty: +parsedParameters["--qty"],
     date: dateAndTime
@@ -30,7 +30,7 @@ const saveTransactions = function(updatedTransactions, path, fileSys) {
 
 const generateSaveMessage = function(currentTransaction) {
   let fields =
-    currentTransaction["empid"] +
+    currentTransaction["empId"] +
     "," +
     " " +
     currentTransaction["beverages"] +

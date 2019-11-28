@@ -5,60 +5,37 @@ const performOperation = require("../src/transactionRecord.js")
 const performQueryOperation = require("../src/transactionRecord.js")
   .performQueryOperation;
 
-describe("performQueryOperation", function() {
-  it("should give fetch msg value when file is not exist", function() {
-    let dateAndTime = new Date();
-    let parsedParameters = "abc";
-    let path = "path";
-    let fileSysc = {
-      reader: function(path) {
-        assert.strictEqual(path, "path");
-        return "[]";
-      },
-      exist: function(path) {
-        assert.ok(path, "path");
-        return false;
-      }
-    };
-    let actual = performQueryOperation(
-      parsedParameters,
-      dateAndTime,
-      path,
-      fileSysc
-    );
-    assert.strictEqual(actual, "record not found");
-  });
-
-  it("should fetch the transactions from file when file is exist", function() {
-    let path = "path";
-    let parsedParameters = "xyz";
-    let dateAndTime = new Date();
-    let fileSysc = {
-      reader: function(path) {
-        assert.strictEqual(path, "path");
-        return "[]";
-      },
-      exist: function(path) {
-        assert.ok(path, "path");
-        return true;
-      }
-    };
-    let actual = performQueryOperation(
-      parsedParameters,
-      dateAndTime,
-      path,
-      fileSysc
-    );
-    assert.deepStrictEqual(actual, []);
-  });
-});
+//
+//   it("should give the msg for query transactions when file is exist", function() {
+//     let path = "path";
+//     let parsedParameters = { empId: "2", date: "2-3-2000" };
+//     let dateAndTime = new Date();
+//     let fileSysc = {
+//       reader: function(path) {
+//         assert.strictEqual(path, "path");
+//         return '[{"empId": "2","date":"2-3-2000"}]';
+//       },
+//       exist: function(path) {
+//         assert.ok(path, "path");
+//         return true;
+//       }
+//     };
+//     let actual = performQueryOperation(
+//       parsedParameters,
+//       dateAndTime,
+//       path,
+//       fileSysc
+//     );
+//     assert.deepStrictEqual(actual, { empId: "2", date: "2-3-2000" });
+//   });
+// });
 
 describe("performOperation", function() {
   it("should perform the save operation when save option is present", function() {
     let operation = "--save";
     let parsedParameters = {
       "--beverage": "orange",
-      "--empid": "2",
+      "--empId": "2",
       "--qty": "1"
     };
     let dateAndTime = new Date();
@@ -72,7 +49,7 @@ describe("performOperation", function() {
         assert.strictEqual(path, "path");
         assert.strictEqual(
           data,
-          '[\n  {\n    "empid": 2,\n    "beverages": "orange",\n    "qty": 1,\n    "date": "' +
+          '[\n  {\n    "empId": 2,\n    "beverages": "orange",\n    "qty": 1,\n    "date": "' +
             dateAndTime.toJSON() +
             '"\n  }\n]'
         );
@@ -104,7 +81,7 @@ describe("performOperation", function() {
     let operation = "--query";
     let parsedParameters = {
       "--beverage": "orange",
-      "--empid": "2",
+      "--empId": "2",
       "--qty": "1"
     };
     let dateAndTime = "23/2/2000";

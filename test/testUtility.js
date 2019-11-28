@@ -5,6 +5,7 @@ const getError = utility.getError;
 const isIncludeOption = utility.isIncludeOption;
 const isPositiveInt = utility.isPositiveInt;
 const parseParameters = utility.parseParameters;
+const sum = utility.sum;
 
 describe("getError", function() {
   it("should print error message", function() {
@@ -14,12 +15,12 @@ describe("getError", function() {
 
 describe("isIncludeOption", function() {
   it("should validate when option is include in options", function() {
-    let options = { "--beverage": "orange", "--empid": "1" };
-    assert.ok(isIncludeOption(options, "--empid"));
+    let options = { "--beverage": "orange", "--empId": "1" };
+    assert.ok(isIncludeOption(options, "--empId"));
   });
 
   it("should invalidate when option is not include in options", function() {
-    let options = { "--beverage": "orange", "--empid": "1" };
+    let options = { "--beverage": "orange", "--empId": "1" };
     assert.ok(!isIncludeOption(options, "--qty"));
   });
 });
@@ -44,14 +45,14 @@ describe("isPositiveInt", function() {
 
 describe("parseParameters", function() {
   it("should give transactionFields for even num of parameters", function() {
-    let parameters = ["beverage", "orange", "empid", "5", "qty", "4"];
-    let expected = { beverage: "orange", empid: "5", qty: "4" };
+    let parameters = ["beverage", "orange", "empId", "5", "qty", "4"];
+    let expected = { beverage: "orange", empId: "5", qty: "4" };
     assert.deepStrictEqual(parseParameters(parameters), expected);
   });
 
   it("should give transactionFields for odd num of parameters", function() {
-    let parameters = ["beverage", "orange", "empid", "5", "qty"];
-    let expected = { beverage: "orange", empid: "5", qty: undefined };
+    let parameters = ["beverage", "orange", "empId", "5", "qty"];
+    let expected = { beverage: "orange", empId: "5", qty: undefined };
     assert.deepStrictEqual(parseParameters(parameters), expected);
   });
 });

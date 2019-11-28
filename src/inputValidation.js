@@ -15,16 +15,16 @@ const isValidOptionAndValue = function(parsedParameters, option) {
 
 const isValidSaveParameters = function(parsedParameters, length) {
   const validBeverage = isValidBeverage(parsedParameters);
-  const validEmpid = isValidOptionAndValue(parsedParameters, "--empid");
+  const validEmpId = isValidOptionAndValue(parsedParameters, "--empId");
   const validQty = isValidOptionAndValue(parsedParameters, "--qty");
   const validLength = length == 6;
-  return validBeverage && validEmpid && validQty && validLength;
+  return validBeverage && validEmpId && validQty && validLength;
 };
 
 const isValidQueryParameters = function(parsedParameters, length) {
-  const validLength = length == 2;
-  const validEmpid = isValidOptionAndValue(parsedParameters, "--empid");
-  return validLength && validEmpid;
+  const validLength = length == 2 || length == 4;
+  const validEmpId = isValidOptionAndValue(parsedParameters, "--empId");
+  return validLength && validEmpId;
 };
 
 const isValidInput = function(operation, parsedParameters, length) {

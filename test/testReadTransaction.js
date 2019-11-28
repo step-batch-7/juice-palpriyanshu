@@ -3,6 +3,8 @@ const assert = require("assert");
 
 const fetchTransactions = read.fetchTransactions;
 const extractTransactions = read.extractTransactions;
+const getTotalQty = read.getTotalQty;
+const isCriteriaTrue = read.isCriteriaTrue;
 
 describe("fetchTransactions", function() {
   it("should fetch the transactions from file when file is exist", function() {
@@ -22,17 +24,82 @@ describe("fetchTransactions", function() {
 });
 
 describe("extractTransactions", function() {
-  it("should extract the transactions on the basis of empid", function() {
+  it("should extract the transactions on the basis of empId", function() {
+    let dateAndTime = new Date();
+    let date = new Date("2019-11-28T09:39:22.955Z");
     let fetchedTransactions = [
-      { empid: 1, date: "2 / 3 / 2000" },
-      { empid: 2, date: "2 / 3 / 2000" },
-      { empid: 1, date: "1 / 4 / 1999" }
+      { empId: 1, date: dateAndTime },
+      { empId: 2, date: dateAndTime },
+      { empId: 1, date: date }
     ];
-    let empid = 1;
-    let creteria = empid;
-    assert.deepStrictEqual(extractTransactions(fetchedTransactions, creteria), [
-      { empid: 1, date: "2 / 3 / 2000" },
-      { empid: 1, date: "1 / 4 / 1999" }
-    ]);
+    let parsedParameters = { "--empId": 2 };
+    assert.deepStrictEqual(
+      extractTransactions(fetchedTransactions, parsedParameters),
+      [{ empId: 2, date: dateAndTime }]
+    );
+  });
+
+  // it("should extract the transactions on the basis of date", function() {
+  //   let dateAndTime = new Date();
+  //   let date = new Date("2019-11-28T09:39:22.955Z");
+  //   let fetchedTransactions = [
+  //     { empId: 1, date: dateAndTime },
+  //     { empId: 2, date: dateAndTime },
+  //     { empId: 1, date: date }
+  //   ];
+  //   let criteria = "2019-11-27";
+  //   assert.deepStrictEqual(extractTransactions(fetchedTransactions, criteria), [
+  //     { empId: 1, date: dateAndTime },
+  //     { empId: 2, date: dateAndTime }
+  //   ]);
+  // });
+});
+
+describe("getTotalQty", function() {
+  it("should add qty of juice", function() {
+    let extractedTransactions = [
+      { empId: 1, qty: 2 },
+      { empId: 1, qty: 3 }
+    ];
+    assert.strictEqual(getTotalQty(extractedTransactions), 5);
+  });
+});
+
+describe("isCriteriaTrue", function() {
+  it("should validate when employee Id is given", function() {
+    let dateAndTime = new Date();
+    let transaction = {
+      empId: "2",
+      beverage: "orange",
+      qty: "1",
+      date: dateAndTime
+    };
+    parsedParameters = { "--empId": 2 };
+    assert.ok(isCriteriaTrue(parsedParameters));
+  });
+
+  it("should validate when date is given", function() {
+    let dateAndTime = new Date();
+    let transaction = {
+      empId: "2",
+      beverage: "orange",
+      qty: "1",
+      date: dateAndTime
+    };
+    criteria1 = 20 / 11 / 2019;
+    assert.ok(isCriteriaTrue(criteria1));
+  });
+
+  it("should validate when both date and empId is given", function() {
+    let dateAndTime = new Date();
+    let transaction = {
+      empId: "2",
+      beverage: "orange",
+      qty: "1",
+      date: dateAndTime
+    };
+    criteria1 = 20 / 11 / 2019;
+    criteria2 = 2;
+    assert.ok(isCriteriaTrue(criteria1, criteria2));
   });
 });

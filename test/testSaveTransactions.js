@@ -12,12 +12,12 @@ describe("generateCurrentTransaction", function() {
   it("should give transactions when transaction field is given", function() {
     let parsedParameters = {
       "--beverage": "orange",
-      "--empid": "23",
+      "--empId": "23",
       "--qty": "8"
     };
     let dateAndTime = new Date();
     let expected = {
-      empid: 23,
+      empId: 23,
       beverages: "orange",
       qty: 8,
       date: dateAndTime
@@ -32,7 +32,7 @@ describe("generateCurrentTransaction", function() {
     let parsedParameters = {};
     let dateAndTime = new Date();
     let expected = {
-      empid: +undefined,
+      empId: +undefined,
       beverages: undefined,
       qty: +undefined,
       date: dateAndTime
@@ -46,13 +46,13 @@ describe("generateCurrentTransaction", function() {
   it("should give last value when transaction field is repeated", function() {
     let parsedParameters = {
       "--beverage": "orange",
-      "--empid": "23",
+      "--empId": "23",
       "--qty": "8",
-      "--empid": "34"
+      "--empId": "34"
     };
     let dateAndTime = new Date();
     let expected = {
-      empid: 34,
+      empId: 34,
       beverages: "orange",
       qty: 8,
       date: dateAndTime
@@ -98,31 +98,31 @@ describe("updateTransactions", function() {
   it("should update the previous transactions", function() {
     let previousTransactions = [];
     let currentTransaction = {
-      empid: "2",
+      empId: 2,
       beverage: "orange",
-      qty: "1",
+      qty: 1,
       date: "2/2/2000"
     };
     let actual = updateTransactions(previousTransactions, currentTransaction);
-    let expected = [
-      { empid: "2", beverage: "orange", qty: "1", date: "2/2/2000" }
-    ];
+    let expected = [{ empId: 2, beverage: "orange", qty: 1, date: "2/2/2000" }];
     assert.deepStrictEqual(actual, expected);
   });
 });
 
 describe("saveTransactions", function() {
   it("should save the transactions in the file", function() {
-    let data = { empid: "6" };
+    let data = { empId: 6 };
     let path = "path";
+    let functionWasCalled = 0;
     let fileSys = {
       writer: function(path, data) {
+        functionWasCalled++;
         assert.strictEqual(path, "path");
-        assert.strictEqual(data, '{\n  "empid": "6"\n}');
-        return;
+        assert.strictEqual(data, '{\n  "empId": 6\n}');
       }
     };
     assert.strictEqual(saveTransactions(data, path, fileSys), undefined);
+    assert.strictEqual(functionWasCalled, 1);
   });
 });
 
@@ -130,7 +130,7 @@ describe("generateSaveMessage", function() {
   it("should generate message after saving the transactions", function() {
     let dateAndTime = new Date();
     let currentTransaction = {
-      empid: 23,
+      empId: 23,
       beverages: "orange",
       qty: 8,
       date: dateAndTime

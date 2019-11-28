@@ -19,7 +19,12 @@ const isPositiveInt = function(num) {
   return +num > 0 && Number.isInteger(+num);
 };
 
+const sum = function(element1, element2) {
+  return element1 + element2.qty;
+};
+
 exports.getError = getError;
 exports.isIncludeOption = isIncludeOption;
 exports.parseParameters = parseParameters;
 exports.isPositiveInt = isPositiveInt;
+exports.sum = sum;
