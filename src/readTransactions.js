@@ -1,19 +1,18 @@
-const fs = require("fs");
 const sum = require("../src/utility.js").sum;
 
-const fetchTransactions = function(path, fileSys) {
-  let fetchedTransaction = fileSys.reader(path, "utf8");
+const fetchTransactions = function(fileSys) {
+  let fetchedTransaction = fileSys.reader(fileSys.path, fileSys.encoder);
   return JSON.parse(fetchedTransaction);
 };
 
 const isCriteriaTrue = function(parsedParameters) {
   return function(transaction) {
-    const empId = parsedParameters["--empId"] || transaction["empId"];
-    const beverage = parsedParameters["--beverages"] || transaction["beverage"];
-    const date = parsedParameters["--date"] || transaction["date"].slice(0, 10);
-    const validEmpId = empId == transaction["empId"];
-    const validBeverage = beverage == transaction["beverage"];
-    const validDate = date == transaction["date"].slice(0, 10);
+    const empId = parsedParameters["--empId"] || transaction.empId;
+    const beverage = parsedParameters["--beverages"] || transaction.beverage;
+    const date = parsedParameters["--date"] || transaction.date.slice(0, 10);
+    const validEmpId = empId == transaction.empId;
+    const validBeverage = beverage == transaction.beverage;
+    const validDate = date == transaction.date.slice(0, 10);
     return validDate && validEmpId && validBeverage;
   };
 };
@@ -33,10 +32,9 @@ const getFields = function(context, transactions) {
 };
 
 const getMessageForQuery = function(extractedTransactions, totalQty) {
-  let fields = extractedTransactions.reduce(getFields, "\n");
   let header = "Employee Id, Beverage, Quantity, Date";
-  let message = fields;
-  let total = "total : " + totalQty + " juice";
+  let message = extractedTransactions.reduce(getFields, "\n");
+  let total = `total : ${totalQty} juice`;
   return header + message + total;
 };
 

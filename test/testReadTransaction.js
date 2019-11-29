@@ -9,8 +9,8 @@ const getMessageForQuery = read.getMessageForQuery;
 
 describe("fetchTransactions", function() {
   it("should fetch the transactions from file when file is exist", function() {
-    let path = "path";
     let fileSysc = {
+      path: "path",
       reader: function(path) {
         assert.strictEqual(path, "path");
         return "[]";
@@ -20,7 +20,7 @@ describe("fetchTransactions", function() {
         return true;
       }
     };
-    assert.deepStrictEqual(fetchTransactions(path, fileSysc), []);
+    assert.deepStrictEqual(fetchTransactions(fileSysc), []);
   });
 });
 
@@ -42,17 +42,35 @@ describe("extractTransactions", function() {
 
   it("should extract the transactions on the basis of date", function() {
     let dateAndTime = new Date().toJSON();
-    let date = new Date("2019-11-29T09:39:22.955Z").toJSON();
+    let date = new Date("2019-11-26T09:39:22.955Z").toJSON();
     let fetchedTransactions = [
       { empId: 1, date: dateAndTime },
       { empId: 2, date: dateAndTime },
       { empId: 1, date: date }
     ];
-    let parsedParameters = { "--date": "2019-11-28" };
+    let parsedParameters = { "--date": "2019-11-29" };
+
     let actual = extractTransactions(fetchedTransactions, parsedParameters);
-    assert.deepStrictEqual(actual, [
+    let expected = [
       { empId: 1, date: dateAndTime },
       { empId: 2, date: dateAndTime }
+    ];
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it("should extract the transactions on the basis of beverage", function() {
+    let dateAndTime = new Date().toJSON();
+    let date = new Date("2019-11-29T09:39:22.955Z").toJSON();
+    let fetchedTransactions = [
+      { empId: 1, date: dateAndTime, beverage: "apple" },
+      { empId: 2, date: dateAndTime, beverage: "orange" },
+      { empId: 3, date: date, beverage: "apple" }
+    ];
+    let parsedParameters = { "--beverages": "apple" };
+    let actual = extractTransactions(fetchedTransactions, parsedParameters);
+    assert.deepStrictEqual(actual, [
+      { empId: 1, date: dateAndTime, beverage: "apple" },
+      { empId: 3, date: date, beverage: "apple" }
     ]);
   });
 });
@@ -95,12 +113,12 @@ describe("isCriteriaTrue", function() {
   it("should validate when date is given", function() {
     let dateAndTime = new Date().toJSON();
     let transaction = {
-      empId: "2",
+      empId: 2,
       beverage: "orange",
-      qty: "1",
+      qty: 1,
       date: dateAndTime
     };
-    let parsedParameters = { "--date": "2019-11-28" };
+    let parsedParameters = { "--date": "2019-11-29" };
     assert.ok(isCriteriaTrue(parsedParameters)(transaction));
   });
 
@@ -124,7 +142,7 @@ describe("isCriteriaTrue", function() {
       qty: 1,
       date: dateAndTime
     };
-    let parsedParameters = { "--date": "2019-11-28", "--empId": 2 };
+    let parsedParameters = { "--date": "2019-11-29", "--empId": 2 };
     assert.ok(isCriteriaTrue(parsedParameters)(transaction));
   });
 

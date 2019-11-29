@@ -8,10 +8,10 @@ const generateCurrentTransaction = function(parsedParameters, dateAndTime) {
   return transaction;
 };
 
-const getPreviousTransactions = function(path, fileSys) {
+const getPreviousTransactions = function(fileSys) {
   let previousTransactions = [];
-  if (fileSys.exist(path)) {
-    previousTransactions = fileSys.reader(path, "utf8");
+  if (fileSys.exist(fileSys.path)) {
+    previousTransactions = fileSys.reader(fileSys.path, fileSys.encoder);
     previousTransactions = JSON.parse(previousTransactions);
   }
   return previousTransactions;
@@ -22,28 +22,19 @@ const updateTransactions = function(previousTransactions, currentTransaction) {
   return previousTransactions;
 };
 
-const saveTransactions = function(updatedTransactions, path, fileSys) {
+const saveTransactions = function(updatedTransactions, fileSys) {
   updatedTransactions = JSON.stringify(updatedTransactions, null, 2);
-  fileSys.writer(path, updatedTransactions, "utf8");
+  fileSys.writer(fileSys.path, updatedTransactions, fileSys.encoder);
   return;
 };
 
 const generateSaveMessage = function(currentTransaction) {
-  let fields =
-    currentTransaction["empId"] +
-    "," +
-    " " +
-    currentTransaction["beverages"] +
-    "," +
-    " " +
-    currentTransaction["qty"] +
-    "," +
-    " " +
-    currentTransaction["date"].toJSON();
-  let message = "Transaction Recorded: ";
-  message = message + "\n" + "Employee ID,Beverage,Quantity,Date";
-  message = message + "\n" + fields;
-  return message;
+  let fields = `${currentTransaction.empId}, ${currentTransaction.beverages}, ${
+    currentTransaction.qty
+  }, ${currentTransaction.date.toJSON()}`;
+  let message = `Transaction Recorded:`;
+  let header = `Employee Id,Beverage,Quantity,Date`;
+  return [message, header, fields].join("\n");
 };
 
 exports.generateCurrentTransaction = generateCurrentTransaction;

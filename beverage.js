@@ -9,11 +9,13 @@ const main = function() {
   const parameters = process.argv.slice(3);
   const parsedParameters = util.parseParameters(parameters);
   let date = new Date();
-  const path = "./transactions.json";
+  //const path = "./transactions.json";
   const fileSys = {
     reader: fs.readFileSync,
     writer: fs.writeFileSync,
-    exist: fs.existsSync
+    exist: fs.existsSync,
+    path: "./transactions.json",
+    encoder: "utf8"
   };
   const inputValidity = isValidInput(
     operation,
@@ -22,7 +24,7 @@ const main = function() {
   );
   let result = getError();
   if (inputValidity) {
-    result = performOperation(operation, parsedParameters, date, path, fileSys);
+    result = performOperation(operation, parsedParameters, date, fileSys);
   }
   console.log(result);
 };

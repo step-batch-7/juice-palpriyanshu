@@ -67,6 +67,7 @@ describe("generateCurrentTransaction", function() {
 describe("getPreviousTransactions", function() {
   it("should give empty object when file is not exist", function() {
     let fileSys = {
+      path: "path",
       reader: function(path, encoder) {
         assert.strictEqual(path, "path");
         return "[]";
@@ -76,11 +77,12 @@ describe("getPreviousTransactions", function() {
         return false;
       }
     };
-    assert.deepStrictEqual(getPreviousTransactions("path", fileSys), []);
+    assert.deepStrictEqual(getPreviousTransactions(fileSys), []);
   });
 
   it("should give previous transaction when file is exist", function() {
     let fileSys = {
+      path: "path",
       reader: function(path) {
         assert.strictEqual(path, "path");
         return "[]";
@@ -90,7 +92,7 @@ describe("getPreviousTransactions", function() {
         return true;
       }
     };
-    assert.deepStrictEqual(getPreviousTransactions("path", fileSys), []);
+    assert.deepStrictEqual(getPreviousTransactions(fileSys), []);
   });
 });
 
@@ -115,13 +117,14 @@ describe("saveTransactions", function() {
     let path = "path";
     let functionWasCalled = 0;
     let fileSys = {
+      path: "path",
       writer: function(path, data) {
         functionWasCalled++;
         assert.strictEqual(path, "path");
         assert.strictEqual(data, '{\n  "empId": 6\n}');
       }
     };
-    assert.strictEqual(saveTransactions(data, path, fileSys), undefined);
+    assert.strictEqual(saveTransactions(data, fileSys), undefined);
     assert.strictEqual(functionWasCalled, 1);
   });
 });
@@ -136,21 +139,7 @@ describe("generateSaveMessage", function() {
       date: dateAndTime
     };
     let actual = generateSaveMessage(currentTransaction);
-    let expected =
-      "Transaction Recorded: " +
-      "\n" +
-      "Employee ID,Beverage,Quantity,Date" +
-      "\n" +
-      "23" +
-      "," +
-      " " +
-      "orange" +
-      "," +
-      " " +
-      "8" +
-      "," +
-      " " +
-      dateAndTime.toJSON();
+    let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n23, orange, 8, ${dateAndTime.toJSON()}`;
     assert.strictEqual(actual, expected);
   });
 });

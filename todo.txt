@@ -1,2 +1,1 @@
 refactor main function
-filter should work for any criteria

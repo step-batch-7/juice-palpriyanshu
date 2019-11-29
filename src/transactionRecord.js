@@ -12,39 +12,25 @@ const extractTransactions = read.extractTransactions;
 const getTotalQty = read.getTotalQty;
 const getMessageForQuery = read.getMessageForQuery;
 
-const performSaveOperation = function(
-  parsedParameters,
-  dateAndTime,
-  path,
-  fileSys
-) {
+const performSaveOperation = function(parsedParameters, dateAndTime, fileSys) {
   const currentTransaction = generateCurrentTransaction(
     parsedParameters,
     dateAndTime
   );
-  const previousTransactions = getPreviousTransactions(path, fileSys);
+  const previousTransactions = getPreviousTransactions(fileSys);
   const updatedTransactions = updateTransactions(
     previousTransactions,
     currentTransaction
   );
-  const savedTransactions = saveTransactions(
-    updatedTransactions,
-    path,
-    fileSys
-  );
+  const savedTransactions = saveTransactions(updatedTransactions, fileSys);
   const message = generateSaveMessage(currentTransaction);
   return message;
 };
 
-const performQueryOperation = function(
-  parsedParameters,
-  dateAndTime,
-  path,
-  fileSys
-) {
+const performQueryOperation = function(parsedParameters, dateAndTime, fileSys) {
   let message = "record not found";
-  if (fileSys.exist(path)) {
-    const fetchedTransactions = fetchTransactions(path, fileSys);
+  if (fileSys.exist(fileSys.path)) {
+    const fetchedTransactions = fetchTransactions(fileSys);
     const extractedTransactions = extractTransactions(
       fetchedTransactions,
       parsedParameters
@@ -60,14 +46,13 @@ const performOperation = function(
   operation,
   parsedParameters,
   dateAndTime,
-  path,
   fileSys
 ) {
   const options = {
     "--save": performSaveOperation,
     "--query": performQueryOperation
   };
-  return options[operation](parsedParameters, dateAndTime, path, fileSys);
+  return options[operation](parsedParameters, dateAndTime, fileSys);
 };
 
 exports.performOperation = performOperation;
