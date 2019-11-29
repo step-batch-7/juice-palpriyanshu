@@ -1,13 +1,12 @@
 const fs = require("fs");
 const performOperation = require("./src/transactionRecord.js").performOperation;
-const util = require("./src/utility.js");
+const parseParameters = require("./src/utility.js").parseParameters;
 const isValidInput = require("./src/inputValidation.js").isValidInput;
-const getError = require("./src/utility.js").getError;
 
 const main = function() {
   const operation = process.argv[2];
   const parameters = process.argv.slice(3);
-  const parsedParameters = util.parseParameters(parameters);
+  const parsedParameters = parseParameters(parameters);
   let date = new Date();
   const fileSys = {
     reader: fs.readFileSync,
@@ -21,10 +20,13 @@ const main = function() {
     parsedParameters,
     parameters.length
   );
-  let result = getError();
-  if (inputValidity) {
-    result = performOperation(operation, parsedParameters, date, fileSys);
-  }
+  const result = performOperation(
+    operation,
+    parsedParameters,
+    date,
+    fileSys,
+    inputValidity
+  );
   console.log(result);
 };
 

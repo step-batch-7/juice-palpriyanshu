@@ -74,6 +74,7 @@ describe("performSaveOperation", function() {
 
 describe("performOperation", function() {
   it("should perform save operation when save option is present", function() {
+    let inputValidity = true;
     let operation = "--save";
     let parsedParameters = { "--empId": 4, "--beverage": "apple", "--qty": 2 };
     let dateAndTime = new Date();
@@ -95,13 +96,15 @@ describe("performOperation", function() {
       operation,
       parsedParameters,
       dateAndTime,
-      fileSys
+      fileSys,
+      inputValidity
     );
     let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n4, apple, 2, ${dateAndTime.toJSON()}`;
     assert.strictEqual(actual, expected);
   });
 
   it("should perform query operation when query option is present", function() {
+    let inputValidity = true;
     let operation = "--query";
     let parsedParameters = { "--empId": 4, "--beverage": "apple" };
     let dateAndTime = new Date();
@@ -126,9 +129,39 @@ describe("performOperation", function() {
       operation,
       parsedParameters,
       dateAndTime,
-      fileSys
+      fileSys,
+      inputValidity
     );
     let expected = `Employee Id, Beverage, Quantity, Date\ntotal : 0 juice`;
     assert.strictEqual(actual, expected);
+  });
+
+  it("should give error msg when input is invalid", function() {
+    let inputValidity = false;
+    let operation = "--save";
+    let parsedParameters = { "--empId": 4, "--beverage": "apple", "--qty": 2 };
+    let dateAndTime = new Date();
+    let fileSys = {
+      path: "path",
+      encoder: "utf8",
+
+      reader: function(path) {
+        assert.strictEqual(path, "path");
+      },
+      writer: function(path, data) {
+        assert.strictEqual(path, "path");
+      },
+      exist: function(path) {
+        assert.strictEqual(path, "path");
+      }
+    };
+    let actual = performOperation(
+      operation,
+      parsedParameters,
+      dateAndTime,
+      fileSys,
+      inputValidity
+    );
+    assert.strictEqual(actual, "wrong Input");
   });
 });

@@ -1,4 +1,6 @@
-const utility = require("./utility.js");
+//const utility = require("./utility.js");
+const getError = require("./utility.js").getError;
+
 const read = require("./readTransactions.js");
 const saved = require("./saveTransactions.js");
 
@@ -46,13 +48,17 @@ const performOperation = function(
   operation,
   parsedParameters,
   dateAndTime,
-  fileSys
+  fileSys,
+  inputValidity
 ) {
-  const options = {
-    "--save": performSaveOperation,
-    "--query": performQueryOperation
-  };
-  return options[operation](parsedParameters, dateAndTime, fileSys);
+  if (inputValidity) {
+    const options = {
+      "--save": performSaveOperation,
+      "--query": performQueryOperation
+    };
+    return options[operation](parsedParameters, dateAndTime, fileSys);
+  }
+  return getError();
 };
 
 exports.performOperation = performOperation;
