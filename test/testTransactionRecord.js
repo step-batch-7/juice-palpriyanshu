@@ -100,4 +100,35 @@ describe("performOperation", function() {
     let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n4, apple, 2, ${dateAndTime.toJSON()}`;
     assert.strictEqual(actual, expected);
   });
+
+  it("should perform query operation when query option is present", function() {
+    let operation = "--query";
+    let parsedParameters = { "--empId": 4, "--beverage": "apple" };
+    let dateAndTime = new Date();
+    let fileSys = {
+      path: "path",
+      encoder: "utf8",
+
+      reader: function(path) {
+        assert.strictEqual(path, "path");
+        return "[]";
+      },
+      writer: function(path, data) {
+        assert.strictEqual(path, "path");
+        return;
+      },
+      exist: function(path) {
+        assert.strictEqual(path, "path");
+        return true;
+      }
+    };
+    let actual = performOperation(
+      operation,
+      parsedParameters,
+      dateAndTime,
+      fileSys
+    );
+    let expected = `Employee Id, Beverage, Quantity, Date\ntotal : 0 juice`;
+    assert.strictEqual(actual, expected);
+  });
 });
