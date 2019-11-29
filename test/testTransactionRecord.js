@@ -71,3 +71,33 @@ describe("performSaveOperation", function() {
     assert.strictEqual(actual, expected);
   });
 });
+
+describe("performOperation", function() {
+  it("should perform save operation when save option is present", function() {
+    let operation = "--save";
+    let parsedParameters = { "--empId": 4, "--beverage": "apple", "--qty": 2 };
+    let dateAndTime = new Date();
+    let fileSys = {
+      path: "path",
+      encoder: "utf8",
+
+      reader: function(path) {
+        assert.strictEqual(path, "path");
+      },
+      writer: function(path, data) {
+        assert.strictEqual(path, "path");
+      },
+      exist: function(path) {
+        assert.strictEqual(path, "path");
+      }
+    };
+    let actual = performOperation(
+      operation,
+      parsedParameters,
+      dateAndTime,
+      fileSys
+    );
+    let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n4, apple, 2, ${dateAndTime.toJSON()}`;
+    assert.strictEqual(actual, expected);
+  });
+});
