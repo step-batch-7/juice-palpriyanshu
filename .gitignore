@@ -3,5 +3,4 @@ coverage
 .nyc_output
 testFile.json
 test/.DS_Store
-
-
+transactions.json

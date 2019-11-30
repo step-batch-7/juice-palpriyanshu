@@ -2,19 +2,19 @@ const fs = require("fs");
 const performOperation = require("./src/transactionRecord.js").performOperation;
 const parseParameters = require("./src/utility.js").parseParameters;
 const isValidInput = require("./src/inputValidation.js").isValidInput;
+const timeStamp = require("./src/config.js").timeStamp;
 
 const main = function() {
   const operation = process.argv[2];
   const parameters = process.argv.slice(3);
   const parsedParameters = parseParameters(parameters);
-  let date = process.env.date || new Date().toJSON();
-  date = new Date(date);
+  let date = timeStamp(process.env);
   const fileSys = {
     reader: fs.readFileSync,
     writer: fs.writeFileSync,
     exist: fs.existsSync,
-    path: process.env.JS_PATH || "./transactions.json",
-    encoder: "utf8"
+    path: process.env.JS_PATH || `./transactions.json`,
+    encoder: `utf8`
   };
   const inputValidity = isValidInput(
     operation,
