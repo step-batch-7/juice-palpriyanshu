@@ -29,11 +29,11 @@ const saveTransactions = function(updatedTransactions, fileSys) {
 };
 
 const generateSaveMessage = function(currentTransaction) {
-  let fields = `${currentTransaction.empId}, ${currentTransaction.beverages}, ${
+  let fields = `${currentTransaction.empId},${currentTransaction.beverages},${
     currentTransaction.qty
-  }, ${currentTransaction.date.toJSON()}`;
+  },${currentTransaction.date.toJSON()}`;
   let message = `Transaction Recorded:`;
-  let header = `Employee Id,Beverage,Quantity,Date`;
+  let header = `Employee ID,Beverage,Quantity,Date`;
   return [message, header, fields].join("\n");
 };
 

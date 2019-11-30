@@ -139,7 +139,7 @@ describe("generateSaveMessage", function() {
       date: dateAndTime
     };
     let actual = generateSaveMessage(currentTransaction);
-    let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n23, orange, 8, ${dateAndTime.toJSON()}`;
+    let expected = `Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n23,orange,8,${dateAndTime.toJSON()}`;
     assert.strictEqual(actual, expected);
   });
 });

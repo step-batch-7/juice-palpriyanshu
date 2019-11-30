@@ -9,7 +9,7 @@ const isValidInput = validity.isValidInput;
 
 describe("isValidBeverage", function() {
   it("should validate when correct option and value is present", function() {
-    let transactionFields = { "--beverage": "orange", empId: "88", qty: "1" };
+    let transactionFields = { "--beverage": "Orange", empId: "88", qty: "1" };
     assert.strictEqual(isValidBeverage(transactionFields), true);
   });
 
@@ -19,7 +19,7 @@ describe("isValidBeverage", function() {
   });
 
   it("should invalidate when option is wrong but value is correct", function() {
-    let transactionFields = { beverage: "orange", empId: "88", qty: "1" };
+    let transactionFields = { beverage: "Orange", empId: "88", qty: "1" };
     assert.strictEqual(isValidBeverage(transactionFields), false);
   });
 
@@ -66,7 +66,7 @@ describe("isValidOptionAndValue", function() {
 describe("isValidSaveParameters", function() {
   it("should validate when all option and length of parameters is correct", function() {
     let parsedParameters = {
-      "--beverage": "orange",
+      "--beverage": "Orange",
       "--empId": "88",
       "--qty": "1"
     };
@@ -84,7 +84,7 @@ describe("isValidSaveParameters", function() {
 
   it("should invalidate when '--empId' is incorrect", function() {
     let parsedParameters = {
-      "--beverage": "orange",
+      "--beverage": "Orange",
       "--empId": "-88",
       "--qty": "1"
     };
@@ -132,7 +132,7 @@ describe("isValidInput", function() {
   it("should validate for save parameters when save option is present", function() {
     let operation = "--save";
     let parsedParameters = {
-      "--beverage": "apple",
+      "--beverage": "Apple",
       "--empId": "3",
       "--qty": "1"
     };

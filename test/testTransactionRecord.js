@@ -31,7 +31,7 @@ describe("performQueryOperation", function() {
       path: "path",
       reader: function(path) {
         assert.strictEqual(path, "path");
-        return '[{"empId": "2","beverages":"apple","qty":2,"date":"2-3-2000"}]';
+        return '[{"empId": "2","beverages":"Apple","qty":2,"date":"2-3-2000"}]';
       },
       exist: function(path) {
         assert.ok(path, "path");
@@ -43,7 +43,7 @@ describe("performQueryOperation", function() {
       { empId: 2, qty: 1 }
     ];
     let actual = performQueryOperation(parsedParameters, dateAndTime, fileSysc);
-    let expected = `Employee Id, Beverage, Quantity, Date\n2,apple,2,2-3-2000\ntotal : 2 juice`;
+    let expected = `Employee ID, Beverage, Quantity, Date\n2,Apple,2,2-3-2000\nTotal: 2 Juice`;
     assert.deepStrictEqual(actual, expected);
   });
 });
@@ -67,7 +67,7 @@ describe("performSaveOperation", function() {
     };
     let date = new Date();
     let actual = performSaveOperation(parsedParameters, date, fileSys);
-    let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n2, apple, 7, ${date.toJSON()}`;
+    let expected = `Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n2,apple,7,${date.toJSON()}`;
     assert.strictEqual(actual, expected);
   });
 });
@@ -99,7 +99,7 @@ describe("performOperation", function() {
       fileSys,
       inputValidity
     );
-    let expected = `Transaction Recorded:\nEmployee Id,Beverage,Quantity,Date\n4, apple, 2, ${dateAndTime.toJSON()}`;
+    let expected = `Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n4,apple,2,${dateAndTime.toJSON()}`;
     assert.strictEqual(actual, expected);
   });
 
@@ -132,7 +132,7 @@ describe("performOperation", function() {
       fileSys,
       inputValidity
     );
-    let expected = `Employee Id, Beverage, Quantity, Date\ntotal : 0 juice`;
+    let expected = `Employee ID, Beverage, Quantity, Date\nTotal: 0 Juice`;
     assert.strictEqual(actual, expected);
   });
 

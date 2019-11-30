@@ -32,9 +32,9 @@ const getFields = function(context, transactions) {
 };
 
 const getMessageForQuery = function(extractedTransactions, totalQty) {
-  let header = "Employee Id, Beverage, Quantity, Date";
+  let header = "Employee ID, Beverage, Quantity, Date";
   let message = extractedTransactions.reduce(getFields, "\n");
-  let total = `total : ${totalQty} juice`;
+  let total = `Total: ${totalQty} Juice`;
   return header + message + total;
 };
 

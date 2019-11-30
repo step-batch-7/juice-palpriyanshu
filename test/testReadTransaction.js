@@ -41,7 +41,7 @@ describe("extractTransactions", function() {
   });
 
   it("should extract the transactions on the basis of date", function() {
-    let dateAndTime = new Date().toJSON();
+    let dateAndTime = new Date(`2019-11-29T02:36:28.472Z`).toJSON();
     let date = new Date("2019-11-26T09:39:22.955Z").toJSON();
     let fetchedTransactions = [
       { empId: 1, date: dateAndTime },
@@ -111,7 +111,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should validate when date is given", function() {
-    let dateAndTime = new Date().toJSON();
+    let dateAndTime = new Date(`2019-11-29T02:36:28.472Z`).toJSON();
     let transaction = {
       empId: 2,
       beverage: "orange",
@@ -135,7 +135,7 @@ describe("isCriteriaTrue", function() {
   });
 
   it("should validate when both empId and date is correct", function() {
-    let dateAndTime = new Date().toJSON();
+    let dateAndTime = new Date(`2019-11-29T02:36:28.472Z`).toJSON();
     let transaction = {
       empId: 2,
       beverage: "orange",
@@ -190,24 +190,9 @@ describe("getMessageForQuery", function() {
       { empId: 2, beverage: "apple", qty: 2 }
     ];
     let totalQty = 5;
-    let header = "Employee Id, Beverage, Quantity, Date";
-    let total = "total : " + totalQty + " juice";
-    let expected =
-      header +
-      "\n" +
-      2 +
-      "," +
-      "orange" +
-      "," +
-      3 +
-      "\n" +
-      2 +
-      "," +
-      "apple" +
-      "," +
-      2 +
-      "\n" +
-      total;
+    let header = `Employee ID, Beverage, Quantity, Date`;
+    let total = `Total: ${totalQty} Juice`;
+    let expected = `${header}\n2,orange,3\n2,apple,2\n${total}`;
     let actual = getMessageForQuery(extractedTransactions, totalQty);
     assert.strictEqual(actual, expected);
   });

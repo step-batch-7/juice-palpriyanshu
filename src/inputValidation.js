@@ -2,7 +2,7 @@ const isPositiveInt = require("./utility.js").isPositiveInt;
 
 const isValidBeverage = function(parsedParameters) {
   const beverageOption = Object.keys(parsedParameters).includes("--beverage");
-  const beverages = ["orange", "mango", "apple"];
+  const beverages = ["Orange", "Mango", "Apple"];
   const beverageValue = beverages.includes(parsedParameters["--beverage"]);
   return beverageOption && beverageValue;
 };

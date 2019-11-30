@@ -7,7 +7,8 @@ const main = function() {
   const operation = process.argv[2];
   const parameters = process.argv.slice(3);
   const parsedParameters = parseParameters(parameters);
-  let date = new Date();
+  let date = process.env.date || new Date().toJSON();
+  date = new Date(date);
   const fileSys = {
     reader: fs.readFileSync,
     writer: fs.writeFileSync,
