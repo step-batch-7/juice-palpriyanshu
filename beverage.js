@@ -13,7 +13,7 @@ const main = function() {
     reader: fs.readFileSync,
     writer: fs.writeFileSync,
     exist: fs.existsSync,
-    path: "./transactions.json",
+    path: process.env.JS_PATH || "./transactions.json",
     encoder: "utf8"
   };
   const inputValidity = isValidInput(

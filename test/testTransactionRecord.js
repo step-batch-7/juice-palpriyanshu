@@ -21,7 +21,10 @@ describe("performQueryOperation", function() {
       }
     };
     let actual = performQueryOperation(parsedParameters, dateAndTime, fileSysc);
-    assert.deepStrictEqual(actual, "record not found");
+    assert.deepStrictEqual(
+      actual,
+      `Employee ID, Beverage, Quantity, Date\nTotal: 0 Juice`
+    );
   });
 
   it("should give the msg for query transactions when file is exist", function() {

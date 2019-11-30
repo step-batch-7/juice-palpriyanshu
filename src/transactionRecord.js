@@ -30,7 +30,7 @@ const performSaveOperation = function(parsedParameters, dateAndTime, fileSys) {
 };
 
 const performQueryOperation = function(parsedParameters, dateAndTime, fileSys) {
-  let message = "record not found";
+  let message = getMessageForQuery([], 0);
   if (fileSys.exist(fileSys.path)) {
     const fetchedTransactions = fetchTransactions(fileSys);
     const extractedTransactions = extractTransactions(
