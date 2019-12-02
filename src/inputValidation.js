@@ -36,8 +36,10 @@ const isValidInput = function(operation, parsedParameters, length) {
   return saveValidity || queryValidity;
 };
 
-exports.isValidSaveParameters = isValidSaveParameters;
-exports.isValidQueryParameters = isValidQueryParameters;
-exports.isValidBeverage = isValidBeverage;
-exports.isValidOptionAndValue = isValidOptionAndValue;
-exports.isValidInput = isValidInput;
+module.exports = {
+  isValidSaveParameters,
+  isValidQueryParameters,
+  isValidBeverage,
+  isValidOptionAndValue,
+  isValidInput
+};
