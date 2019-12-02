@@ -1,8 +1,9 @@
 const fs = require("fs");
-const performOperation = require("./src/transactionRecord.js").performOperation;
-const parseParameters = require("./src/utility.js").parseParameters;
-const isValidInput = require("./src/inputValidation.js").isValidInput;
-const timeStamp = require("./src/config.js").timeStamp;
+const performOperation = require(`./src/transactionRecord.js`).performOperation;
+const parseParameters = require(`./src/utility.js`).parseParameters;
+const isValidInput = require(`./src/inputValidation.js`).isValidInput;
+//const timeStamp = require(`./src/config.js`).timeStamp;
+const { timeStamp, getPath } = require(`./src/config`);
 
 const main = function() {
   const operation = process.argv[2];
@@ -13,7 +14,7 @@ const main = function() {
     reader: fs.readFileSync,
     writer: fs.writeFileSync,
     exist: fs.existsSync,
-    path: process.env.JS_PATH || `./transactions.json`,
+    path: getPath(process.env),
     encoder: `utf8`
   };
   const inputValidity = isValidInput(
