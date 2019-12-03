@@ -1,6 +1,6 @@
 const timeStamp = function(env) {
-  const date = env.date || new Date().toJSON();
-  return new Date(date);
+  const date = env.date ? new Date(env.date) : new Date();
+  return date;
 };
 
 const getPath = function(env) {
