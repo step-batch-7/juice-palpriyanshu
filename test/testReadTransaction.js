@@ -1,11 +1,11 @@
-const read = require("../src/readTransactions.js");
 const assert = require("assert");
-
-const fetchTransactions = read.fetchTransactions;
-const extractTransactions = read.extractTransactions;
-const getTotalQty = read.getTotalQty;
-const isCriteriaTrue = read.isCriteriaTrue;
-const getMessageForQuery = read.getMessageForQuery;
+const {
+  fetchTransactions,
+  extractTransactions,
+  getTotalQty,
+  isCriteriaTrue,
+  getMessageForQuery
+} = require("../src/readTransactions.js");
 
 describe("fetchTransactions", function() {
   it("should fetch the transactions from file when file is exist", function() {
@@ -62,15 +62,15 @@ describe("extractTransactions", function() {
     let dateAndTime = new Date().toJSON();
     let date = new Date("2019-11-29T09:39:22.955Z").toJSON();
     let fetchedTransactions = [
-      { empId: 1, date: dateAndTime, beverage: "apple" },
-      { empId: 2, date: dateAndTime, beverage: "orange" },
-      { empId: 3, date: date, beverage: "apple" }
+      { empId: 1, date: dateAndTime, beverages: "Apple" },
+      { empId: 2, date: dateAndTime, beverages: "Orange" },
+      { empId: 3, date: date, beverages: "Apple" }
     ];
-    let parsedParameters = { "--beverages": "apple" };
+    let parsedParameters = { "--beverage": "Apple" };
     let actual = extractTransactions(fetchedTransactions, parsedParameters);
     assert.deepStrictEqual(actual, [
-      { empId: 1, date: dateAndTime, beverage: "apple" },
-      { empId: 3, date: date, beverage: "apple" }
+      { empId: 1, date: dateAndTime, beverages: "Apple" },
+      { empId: 3, date: date, beverages: "Apple" }
     ]);
   });
 });
@@ -162,11 +162,11 @@ describe("isCriteriaTrue", function() {
     let dateAndTime = new Date().toJSON();
     let transaction = {
       empId: 2,
-      beverage: "orange",
+      beverages: "orange",
       qty: 1,
       date: dateAndTime
     };
-    let parsedParameters = { "--beverages": "orange" };
+    let parsedParameters = { "--beverage": "orange" };
     assert.ok(isCriteriaTrue(parsedParameters)(transaction));
   });
 
@@ -178,7 +178,7 @@ describe("isCriteriaTrue", function() {
       qty: 1,
       date: dateAndTime
     };
-    let parsedParameters = { "--beverages": "chair" };
+    let parsedParameters = { "--beverage": "chair" };
     assert.ok(!isCriteriaTrue(parsedParameters)(transaction));
   });
 });
@@ -191,7 +191,7 @@ describe("getMessageForQuery", function() {
     ];
     let totalQty = 5;
     let header = `Employee ID, Beverage, Quantity, Date`;
-    let total = `Total: ${totalQty} Juice`;
+    let total = `Total: 5 Juices`;
     let expected = `${header}\n2,orange,3\n2,apple,2\n${total}`;
     let actual = getMessageForQuery(extractedTransactions, totalQty);
     assert.strictEqual(actual, expected);

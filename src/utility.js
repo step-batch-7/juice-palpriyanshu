@@ -23,8 +23,10 @@ const sum = function(element1, element2) {
   return element1 + element2.qty;
 };
 
-exports.getError = getError;
-exports.isIncludeOption = isIncludeOption;
-exports.parseParameters = parseParameters;
-exports.isPositiveInt = isPositiveInt;
-exports.sum = sum;
+module.exports = {
+  getError,
+  isIncludeOption,
+  parseParameters,
+  isPositiveInt,
+  sum
+};

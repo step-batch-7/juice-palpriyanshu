@@ -1,9 +1,9 @@
 const assert = require("chai").assert;
-const record = require("../src/transactionRecord.js");
-
-const performOperation = record.performOperation;
-const performQueryOperation = record.performQueryOperation;
-const performSaveOperation = record.performSaveOperation;
+const {
+  performOperation,
+  performQueryOperation,
+  performSaveOperation
+} = require("../src/transactionRecord.js");
 
 describe("performQueryOperation", function() {
   it("should give the msg for query transactions when file is not exist", function() {
@@ -46,7 +46,7 @@ describe("performQueryOperation", function() {
       { empId: 2, qty: 1 }
     ];
     let actual = performQueryOperation(parsedParameters, dateAndTime, fileSysc);
-    let expected = `Employee ID, Beverage, Quantity, Date\n2,Apple,2,2-3-2000\nTotal: 2 Juice`;
+    let expected = `Employee ID, Beverage, Quantity, Date\n2,Apple,2,2-3-2000\nTotal: 2 Juices`;
     assert.deepStrictEqual(actual, expected);
   });
 });

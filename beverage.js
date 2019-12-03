@@ -2,7 +2,6 @@ const fs = require("fs");
 const performOperation = require(`./src/transactionRecord.js`).performOperation;
 const parseParameters = require(`./src/utility.js`).parseParameters;
 const isValidInput = require(`./src/inputValidation.js`).isValidInput;
-//const timeStamp = require(`./src/config.js`).timeStamp;
 const { timeStamp, getPath } = require(`./src/config`);
 
 const main = function() {

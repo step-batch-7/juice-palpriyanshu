@@ -1,33 +1,10 @@
 const assert = require("assert");
-const validity = require("../src/inputValidation.js");
-
-const isValidBeverage = validity.isValidBeverage;
-const isValidOptionAndValue = validity.isValidOptionAndValue;
-const isValidSaveParameters = validity.isValidSaveParameters;
-const isValidQueryParameters = validity.isValidQueryParameters;
-const isValidInput = validity.isValidInput;
-
-describe("isValidBeverage", function() {
-  it("should validate when correct option and value is present", function() {
-    let transactionFields = { "--beverage": "Orange", empId: "88", qty: "1" };
-    assert.strictEqual(isValidBeverage(transactionFields), true);
-  });
-
-  it("should invalidate when option is correct but value is wrong", function() {
-    let transactionFields = { "--beverage": "brinjal", empId: "88", qty: "1" };
-    assert.strictEqual(isValidBeverage(transactionFields), false);
-  });
-
-  it("should invalidate when option is wrong but value is correct", function() {
-    let transactionFields = { beverage: "Orange", empId: "88", qty: "1" };
-    assert.strictEqual(isValidBeverage(transactionFields), false);
-  });
-
-  it("should invalidate when both option and value are wrong", function() {
-    let transactionFields = { beverage: "brinjal", empId: "88", qty: "1" };
-    assert.strictEqual(isValidBeverage(transactionFields), false);
-  });
-});
+const {
+  isValidOptionAndValue,
+  isValidSaveParameters,
+  isValidQueryParameters,
+  isValidInput
+} = require("../src/inputValidation.js");
 
 describe("isValidOptionAndValue", function() {
   it("should validate positive integer for correct option of empId", function() {
@@ -73,11 +50,11 @@ describe("isValidSaveParameters", function() {
     assert.ok(isValidSaveParameters(parsedParameters, 6));
   });
 
-  it("should invalidate when '--beverage' is incorrect", function() {
+  it("should invalidate when '--qty' is incorrect", function() {
     let parsedParameters = {
-      "--beverage": "brinjal",
+      "--beverage": "apple",
       "--empId": "88",
-      "--qty": "1"
+      "--qty": "-1"
     };
     assert.ok(!isValidSaveParameters(parsedParameters, 6));
   });

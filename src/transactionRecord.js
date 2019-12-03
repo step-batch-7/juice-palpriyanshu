@@ -1,18 +1,18 @@
-//const utility = require("./utility.js");
 const getError = require("./utility.js").getError;
 
-const read = require("./readTransactions.js");
-const saved = require("./saveTransactions.js");
-
-const generateCurrentTransaction = saved.generateCurrentTransaction;
-const getPreviousTransactions = saved.getPreviousTransactions;
-const updateTransactions = saved.updateTransactions;
-const saveTransactions = saved.saveTransactions;
-const generateSaveMessage = saved.generateSaveMessage;
-const fetchTransactions = read.fetchTransactions;
-const extractTransactions = read.extractTransactions;
-const getTotalQty = read.getTotalQty;
-const getMessageForQuery = read.getMessageForQuery;
+const {
+  generateCurrentTransaction,
+  getPreviousTransactions,
+  updateTransactions,
+  saveTransactions,
+  generateSaveMessage
+} = require("./saveTransactions.js");
+const {
+  fetchTransactions,
+  extractTransactions,
+  getTotalQty,
+  getMessageForQuery
+} = require("./readTransactions.js");
 
 const performSaveOperation = function(parsedParameters, dateAndTime, fileSys) {
   const currentTransaction = generateCurrentTransaction(
@@ -61,6 +61,8 @@ const performOperation = function(
   return getError();
 };
 
-exports.performOperation = performOperation;
-exports.performQueryOperation = performQueryOperation;
-exports.performSaveOperation = performSaveOperation;
+module.exports = {
+  performOperation,
+  performQueryOperation,
+  performSaveOperation
+};

@@ -37,8 +37,10 @@ const generateSaveMessage = function(currentTransaction) {
   return [message, header, fields].join("\n");
 };
 
-exports.generateCurrentTransaction = generateCurrentTransaction;
-exports.getPreviousTransactions = getPreviousTransactions;
-exports.updateTransactions = updateTransactions;
-exports.saveTransactions = saveTransactions;
-exports.generateSaveMessage = generateSaveMessage;
+module.exports = {
+  generateCurrentTransaction,
+  getPreviousTransactions,
+  updateTransactions,
+  saveTransactions,
+  generateSaveMessage
+};

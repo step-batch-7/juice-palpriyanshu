@@ -8,10 +8,10 @@ const fetchTransactions = function(fileSys) {
 const isCriteriaTrue = function(parsedParameters) {
   return function(transaction) {
     const empId = parsedParameters["--empId"] || transaction.empId;
-    const beverage = parsedParameters["--beverages"] || transaction.beverage;
+    const beverage = parsedParameters["--beverage"] || transaction.beverages;
     const date = parsedParameters["--date"] || transaction.date.slice(0, 10);
     const validEmpId = empId == transaction.empId;
-    const validBeverage = beverage == transaction.beverage;
+    const validBeverage = beverage == transaction.beverages;
     const validDate = date == transaction.date.slice(0, 10);
     return validDate && validEmpId && validBeverage;
   };
@@ -32,14 +32,18 @@ const getFields = function(context, transactions) {
 };
 
 const getMessageForQuery = function(extractedTransactions, totalQty) {
+  let text;
   let header = "Employee ID, Beverage, Quantity, Date";
   let fields = extractedTransactions.reduce(getFields, "\n");
-  let footer = `Total: ${totalQty} Juice`;
+  totalQty < 2 ? (text = `Juice`) : (text = `Juices`);
+  let footer = `Total: ${totalQty} ${text}`;
   return header + fields + footer;
 };
 
-exports.fetchTransactions = fetchTransactions;
-exports.extractTransactions = extractTransactions;
-exports.getTotalQty = getTotalQty;
-exports.getMessageForQuery = getMessageForQuery;
-exports.isCriteriaTrue = isCriteriaTrue;
+module.exports = {
+  fetchTransactions,
+  extractTransactions,
+  getTotalQty,
+  getMessageForQuery,
+  isCriteriaTrue
+};

@@ -1,12 +1,12 @@
 const assert = require("assert");
 const fs = require("fs");
-const saved = require("../src/saveTransactions.js");
-
-const generateCurrentTransaction = saved.generateCurrentTransaction;
-const getPreviousTransactions = saved.getPreviousTransactions;
-const updateTransactions = saved.updateTransactions;
-const saveTransactions = saved.saveTransactions;
-const generateSaveMessage = saved.generateSaveMessage;
+const {
+  generateCurrentTransaction,
+  getPreviousTransactions,
+  updateTransactions,
+  saveTransactions,
+  generateSaveMessage
+} = require("../src/saveTransactions.js");
 
 describe("generateCurrentTransaction", function() {
   it("should give transactions when transaction field is given", function() {

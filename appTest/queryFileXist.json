@@ -6,8 +6,14 @@
     "date": "2019-11-20T05:50:28.267Z"
   },
   {
-    "empId": 11113,
-    "beverages": "Orange",
+    "empId": 12345,
+    "beverages": "Watermelon",
+    "qty": 1,
+    "date": "2019-11-20T05:50:28.267Z"
+  },
+  {
+    "empId": 11111,
+    "beverages": "Watermelon",
     "qty": 1,
     "date": "2019-11-20T05:50:28.267Z"
   }

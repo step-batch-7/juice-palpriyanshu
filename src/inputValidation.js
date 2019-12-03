@@ -1,11 +1,11 @@
 const isPositiveInt = require("./utility.js").isPositiveInt;
 
-const isValidBeverage = function(parsedParameters) {
-  const beverageOption = Object.keys(parsedParameters).includes("--beverage");
-  const beverages = ["Orange", "Mango", "Apple"];
-  const beverageValue = beverages.includes(parsedParameters["--beverage"]);
-  return beverageOption && beverageValue;
-};
+// const isValidBeverage = function(parsedParameters) {
+//   const beverageOption = Object.keys(parsedParameters).includes("--beverage");
+//   const beverages = ["Orange", "Mango", "Apple", "Watermelon"];
+//   const beverageValue = beverages.includes(parsedParameters["--beverage"]);
+//   return beverageOption && beverageValue;
+// };
 
 const isValidOptionAndValue = function(parsedParameters, option) {
   const options = Object.keys(parsedParameters).includes(option);
@@ -14,7 +14,7 @@ const isValidOptionAndValue = function(parsedParameters, option) {
 };
 
 const isValidSaveParameters = function(parsedParameters, length) {
-  const validBeverage = isValidBeverage(parsedParameters);
+  const validBeverage = Object.keys(parsedParameters).includes("--beverage");
   const validEmpId = isValidOptionAndValue(parsedParameters, "--empId");
   const validQty = isValidOptionAndValue(parsedParameters, "--qty");
   const validLength = length == 6;
@@ -24,8 +24,9 @@ const isValidSaveParameters = function(parsedParameters, length) {
 const isValidQueryParameters = function(parsedParameters, length) {
   const validLength = length == 2 || length == 4 || length == 6;
   const validEmpId = isValidOptionAndValue(parsedParameters, "--empId");
-  const validBeverage = isValidBeverage(parsedParameters);
-  return validLength && (validEmpId || validBeverage);
+  const validBeverage = Object.keys(parsedParameters).includes("--beverage");
+  const validDate = Object.keys(parsedParameters).includes("--date");
+  return validLength && (validEmpId || validBeverage || validDate);
 };
 
 const isValidInput = function(operation, parsedParameters, length) {
@@ -39,7 +40,7 @@ const isValidInput = function(operation, parsedParameters, length) {
 module.exports = {
   isValidSaveParameters,
   isValidQueryParameters,
-  isValidBeverage,
+  //isValidBeverage,
   isValidOptionAndValue,
   isValidInput
 };

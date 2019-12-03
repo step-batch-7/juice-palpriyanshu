@@ -1,0 +1,4 @@
+(export JS_PATH="./appTest/queryFileXist.json";node beverage.js --query --beverage Watermelon --empId 11111)
+Employee ID, Beverage, Quantity, Date
+11111,Watermelon,1,2019-11-20T05:50:28.267Z
+Total: 1 Juice

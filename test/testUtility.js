@@ -1,11 +1,11 @@
-const utility = require("../src/utility.js");
 const assert = require("assert");
-
-const getError = utility.getError;
-const isIncludeOption = utility.isIncludeOption;
-const isPositiveInt = utility.isPositiveInt;
-const parseParameters = utility.parseParameters;
-const sum = utility.sum;
+const {
+  getError,
+  isIncludeOption,
+  isPositiveInt,
+  parseParameters,
+  sum
+} = require("../src/utility.js");
 
 describe("getError", function() {
   it("should print error message", function() {
