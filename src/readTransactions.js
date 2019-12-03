@@ -1,7 +1,7 @@
 const sum = require("../src/utility.js").sum;
 
 const fetchTransactions = function(fileSys) {
-  let fetchedTransaction = fileSys.reader(fileSys.path, fileSys.encoder);
+  const fetchedTransaction = fileSys.reader(fileSys.path, fileSys.encoder);
   return JSON.parse(fetchedTransaction);
 };
 
@@ -27,16 +27,19 @@ const getTotalQty = function(extractedTransactions) {
 };
 
 const getFields = function(context, transactions) {
-  context = context + Object.values(transactions).toString() + "\n";
+  context =
+    context +
+    `${transactions.empId},${transactions.beverages},${transactions.qty},${transactions.date}` +
+    "\n";
   return context;
 };
 
-const getMessageForQuery = function(extractedTransactions, totalQty) {
+const getMsgForQuery = function(extractedTransactions, totalQty) {
   let text;
-  let header = "Employee ID, Beverage, Quantity, Date";
-  let fields = extractedTransactions.reduce(getFields, "\n");
+  const header = "Employee ID, Beverage, Quantity, Date";
+  const fields = extractedTransactions.reduce(getFields, "\n");
   totalQty < 2 ? (text = `Juice`) : (text = `Juices`);
-  let footer = `Total: ${totalQty} ${text}`;
+  const footer = `Total: ${totalQty} ${text}`;
   return header + fields + footer;
 };
 
@@ -44,6 +47,6 @@ module.exports = {
   fetchTransactions,
   extractTransactions,
   getTotalQty,
-  getMessageForQuery,
+  getMsgForQuery,
   isCriteriaTrue
 };

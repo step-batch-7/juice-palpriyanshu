@@ -1,12 +1,5 @@
 const isPositiveInt = require("./utility.js").isPositiveInt;
 
-// const isValidBeverage = function(parsedParameters) {
-//   const beverageOption = Object.keys(parsedParameters).includes("--beverage");
-//   const beverages = ["Orange", "Mango", "Apple", "Watermelon"];
-//   const beverageValue = beverages.includes(parsedParameters["--beverage"]);
-//   return beverageOption && beverageValue;
-// };
-
 const isValidOptionAndValue = function(parsedParameters, option) {
   const options = Object.keys(parsedParameters).includes(option);
   const value = isPositiveInt(parsedParameters[option]);
@@ -30,9 +23,9 @@ const isValidQueryParameters = function(parsedParameters, length) {
 };
 
 const isValidInput = function(operation, parsedParameters, length) {
-  let saveValidity =
+  const saveValidity =
     operation == "--save" && isValidSaveParameters(parsedParameters, length);
-  let queryValidity =
+  const queryValidity =
     operation == "--query" && isValidQueryParameters(parsedParameters, length);
   return saveValidity || queryValidity;
 };
@@ -40,7 +33,6 @@ const isValidInput = function(operation, parsedParameters, length) {
 module.exports = {
   isValidSaveParameters,
   isValidQueryParameters,
-  //isValidBeverage,
   isValidOptionAndValue,
   isValidInput
 };

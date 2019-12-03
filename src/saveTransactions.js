@@ -28,12 +28,12 @@ const saveTransactions = function(updatedTransactions, fileSys) {
   return;
 };
 
-const generateSaveMessage = function(currentTransaction) {
-  let fields = `${currentTransaction.empId},${currentTransaction.beverages},${
+const generateSaveMsg = function(currentTransaction) {
+  const fields = `${currentTransaction.empId},${currentTransaction.beverages},${
     currentTransaction.qty
   },${currentTransaction.date.toJSON()}`;
-  let message = `Transaction Recorded:`;
-  let header = `Employee ID,Beverage,Quantity,Date`;
+  const message = `Transaction Recorded:`;
+  const header = `Employee ID,Beverage,Quantity,Date`;
   return [message, header, fields].join("\n");
 };
 
@@ -42,5 +42,5 @@ module.exports = {
   getPreviousTransactions,
   updateTransactions,
   saveTransactions,
-  generateSaveMessage
+  generateSaveMsg
 };

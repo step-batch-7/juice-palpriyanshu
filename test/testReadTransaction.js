@@ -4,7 +4,7 @@ const {
   extractTransactions,
   getTotalQty,
   isCriteriaTrue,
-  getMessageForQuery
+  getMsgForQuery
 } = require("../src/readTransactions.js");
 
 describe("fetchTransactions", function() {
@@ -183,17 +183,17 @@ describe("isCriteriaTrue", function() {
   });
 });
 
-describe("getMessageForQuery", function() {
+describe("getMsgForQuery", function() {
   it("should return the message after getting query option", function() {
     let extractedTransactions = [
-      { empId: 2, beverage: "orange", qty: 3 },
-      { empId: 2, beverage: "apple", qty: 2 }
+      { empId: 2, beverages: "orange", qty: 3 ,date:"2019-12-02"},
+      { empId: 2, beverages: "apple", qty: 2,date:"2019-12-02" }
     ];
     let totalQty = 5;
     let header = `Employee ID, Beverage, Quantity, Date`;
     let total = `Total: 5 Juices`;
-    let expected = `${header}\n2,orange,3\n2,apple,2\n${total}`;
-    let actual = getMessageForQuery(extractedTransactions, totalQty);
+    let expected = `${header}\n2,orange,3,2019-12-02\n2,apple,2,2019-12-02\n${total}`;
+    let actual = getMsgForQuery(extractedTransactions, totalQty);
     assert.strictEqual(actual, expected);
   });
 });

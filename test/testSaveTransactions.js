@@ -5,7 +5,7 @@ const {
   getPreviousTransactions,
   updateTransactions,
   saveTransactions,
-  generateSaveMessage
+  generateSaveMsg
 } = require("../src/saveTransactions.js");
 
 describe("generateCurrentTransaction", function() {
@@ -129,7 +129,7 @@ describe("saveTransactions", function() {
   });
 });
 
-describe("generateSaveMessage", function() {
+describe("generateSaveMsg", function() {
   it("should generate message after saving the transactions", function() {
     let dateAndTime = new Date();
     let currentTransaction = {
@@ -138,7 +138,7 @@ describe("generateSaveMessage", function() {
       qty: 8,
       date: dateAndTime
     };
-    let actual = generateSaveMessage(currentTransaction);
+    let actual = generateSaveMsg(currentTransaction);
     let expected = `Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n23,orange,8,${dateAndTime.toJSON()}`;
     assert.strictEqual(actual, expected);
   });

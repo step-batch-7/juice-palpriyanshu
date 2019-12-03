@@ -1,5 +1,5 @@
 const timeStamp = function(env) {
-  let date = env.date || new Date().toJSON();
+  const date = env.date || new Date().toJSON();
   return new Date(date);
 };
 

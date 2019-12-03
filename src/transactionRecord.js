@@ -5,13 +5,13 @@ const {
   getPreviousTransactions,
   updateTransactions,
   saveTransactions,
-  generateSaveMessage
+  generateSaveMsg
 } = require("./saveTransactions.js");
 const {
   fetchTransactions,
   extractTransactions,
   getTotalQty,
-  getMessageForQuery
+  getMsgForQuery
 } = require("./readTransactions.js");
 
 const performSaveOperation = function(parsedParameters, dateAndTime, fileSys) {
@@ -24,13 +24,12 @@ const performSaveOperation = function(parsedParameters, dateAndTime, fileSys) {
     previousTransactions,
     currentTransaction
   );
-  const savedTransactions = saveTransactions(updatedTransactions, fileSys);
-  const message = generateSaveMessage(currentTransaction);
-  return message;
+  saveTransactions(updatedTransactions, fileSys);
+  return generateSaveMsg(currentTransaction);
 };
 
 const performQueryOperation = function(parsedParameters, dateAndTime, fileSys) {
-  let message = getMessageForQuery([], 0);
+  let message = getMsgForQuery([], 0);
   if (fileSys.exist(fileSys.path)) {
     const fetchedTransactions = fetchTransactions(fileSys);
     const extractedTransactions = extractTransactions(
@@ -38,7 +37,7 @@ const performQueryOperation = function(parsedParameters, dateAndTime, fileSys) {
       parsedParameters
     );
     const totalQty = getTotalQty(extractedTransactions);
-    const messageForQuery = getMessageForQuery(extractedTransactions, totalQty);
+    const messageForQuery = getMsgForQuery(extractedTransactions, totalQty);
     message = messageForQuery;
   }
   return message;
